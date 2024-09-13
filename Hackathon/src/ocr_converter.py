@@ -37,6 +37,28 @@ def postprocessing(text: str) -> list:
     # print(cleaned_text)
     return cleaned_text
 
+def match_units(input_list, units_dict, entity_name):
+    # Create reverse dictionary for the specified entity_name
+    abb_dict = {}
+    for category, sub_dict in units_dict.items():
+        if category == entity_name:
+            for key, value in sub_dict.items():
+                abb_dict[key] = value
+    
+    # List to store results
+    results = []
+    
+    # Iterate through the input list and match last two characters
+    for item in input_list:
+        if len(item) >= 2:
+            last_two_chars = item[-2:]
+            result = abb_dict.get(last_two_chars)
+            if result:
+                print({item,item[:-2]+ " "+ result})
+                results.append({item,item[:-2]+ " "+ result})
+    return results
+
+
 if __name__== "__main__" :
 
     # loader('../dataset/train.csv',100)
@@ -48,15 +70,25 @@ if __name__== "__main__" :
 
     print("Data Loaded :)")
 
-    for i, link in tqdm(enumerate(df['image_link']), total=len(df)):
+    # for i, row in df.itertuples(index=False):
+    #     print(f"Image Link: {row.image_link}")
+    #     print(f"Group ID: {row.group_id}")
+    #     print(f"Entity Name: {row.entity_name}")
+    #     print(f"Entity Value: {row.entity_value}")
 
-        link = link.split('/')[-1]
+    i=0
+
+    for row in df.itertuples(index=False):
+
+        link = row.image_link.split('/')[-1]
         file_name = re.findall(r'.*\.jpg', link)[0]
 
         img =preprocessing(f'../images/{file_name}')
         tes_text = ocr(img)
         output = postprocessing(tes_text)
+        match_units(output,ut.units_dict,row.entity_name)
         list.at[i]=output
+        i+=1
 
     # df['tessaract_values'] = values
     df['List']=list
