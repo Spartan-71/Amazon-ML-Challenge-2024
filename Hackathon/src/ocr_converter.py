@@ -2,97 +2,79 @@ import cv2
 import re
 import pytesseract
 import pandas as pd
-import units as ut
 from PIL import Image
 from tqdm import tqdm
+import units as ut
 
-def loader(dataset_path,no_of_sample):
+def loader(dataset_path, no_of_sample):
+    # Load dataset and return a DataFrame with a specified number of samples.
     df = pd.read_csv(dataset_path)
     df = df.head(no_of_sample)
-    values = pd.Series(dtype='string')
-    pre_values= pd.Series(dtype='string')
-    contains = pd.Series(dtype='string')
-
+    return df
 
 def preprocessing(img_path):
+    # Preprocess the image for better OCR accuracy.
     img = cv2.imread(img_path)
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    #add more preprocessing if the quality increases
+
+    # Add more preprocessing steps if needed
     return gray
 
 def ocr(preprocessed_img) -> str:
+    # Perform OCR on the preprocessed image.
     tes_text = pytesseract.image_to_string(preprocessed_img, lang='eng')
     return tes_text
 
-
 def postprocessing(text: str) -> list:
-    lower_case= text.lower()
-    lower_case.replace('\n', '')
+    # Clean and extract relevant numerical data from OCR text.
+    lower_case = text.lower().replace('\n', '')
     symbols = r'[ !@#%^&*()$_\-\+\{\}\[\]\'\|:;"<>,./~?`=\"©™°®¢»«¥“”§—‘’é€]'
     alphabets = r'[jsxyz]'
     pattern = r'(\d+..)'
     cleaned_symbol = re.sub(symbols, '', lower_case)
-    # cleaned_text = re.sub(alphabets, '', cleaned_symbol)
     cleaned_text = re.findall(pattern, cleaned_symbol)
-    # print(cleaned_text)
     return cleaned_text
 
 def match_units(input_list, units_dict, entity_name):
-    # Create reverse dictionary for the specified entity_name
-    abb_dict = {}
-    for category, sub_dict in units_dict.items():
-        if category == entity_name:
-            for key, value in sub_dict.items():
-                abb_dict[key] = value
+    # Match units from input_list using the provided units_dict and entity_name.
+    abb_dict = {key: value 
+                for category, sub_dict in units_dict.items()
+                    if category == entity_name 
+                         for key, value in sub_dict.items()}
     
-    # List to store results
     results = []
-    
-    # Iterate through the input list and match last two characters
     for item in input_list:
         if len(item) >= 2:
             last_two_chars = item[-2:]
             result = abb_dict.get(last_two_chars)
             if result:
-                print({item,item[:-2]+ " "+ result})
-                results.append({item,item[:-2]+ " "+ result})
+                results.append(f"{item[:-2]} {result}")
+    
     return results
 
-
-if __name__== "__main__" :
-
-    # loader('../dataset/train.csv',100)
-    df = pd.read_csv('../dataset/train.csv')
-    df = df.head(10)
-    values = pd.Series(dtype='string')
-    list= pd.Series(dtype='object')
-    contains = pd.Series(dtype='string')
-
+def main():
+    dataset_path = '../dataset/train.csv'
+    no_of_sample = 10
+    df = loader(dataset_path, no_of_sample)
+    df['List'] = pd.Series(dtype='object')
+    
     print("Data Loaded :)")
-
-    # for i, row in df.itertuples(index=False):
-    #     print(f"Image Link: {row.image_link}")
-    #     print(f"Group ID: {row.group_id}")
-    #     print(f"Entity Name: {row.entity_name}")
-    #     print(f"Entity Value: {row.entity_value}")
-
-    i=0
-
-    for row in df.itertuples(index=False):
-
-        link = row.image_link.split('/')[-1]
+    
+    # Iterate over the DataFrame with a progress bar
+    for i, row in tqdm(df.iterrows(), total=df.shape[0], desc="Processing Images"):
+        link = row['image_link'].split('/')[-1]
         file_name = re.findall(r'.*\.jpg', link)[0]
-
-        img =preprocessing(f'../images/{file_name}')
+        img_path = f'../images/{file_name}'
+        
+        img = preprocessing(img_path)
         tes_text = ocr(img)
         output = postprocessing(tes_text)
-        match_units(output,ut.units_dict,row.entity_name)
-        list.at[i]=output
-        i+=1
-
-    # df['tessaract_values'] = values
-    df['List']=list
-
+        matched_units = match_units(output, ut.units_dict, row['entity_name'])
+        df.at[i, 'List'] = matched_units
+    
     csv_file_path = 'output.csv'
-    df.to_csv(csv_file_path, index=False)  
+    df.to_csv(csv_file_path, index=False)
+    print(f"Results saved to {csv_file_path}")
 
+if __name__ == "__main__":
+    main()
