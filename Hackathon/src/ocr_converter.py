@@ -5,7 +5,7 @@ import pandas as pd
 from PIL import Image
 from tqdm import tqdm
 import units as ut
-
+#pytesseract.pytesseract.tesseract_cmd = r'F:\amazon\tes\tesseract.exe'
 def loader(dataset_path, no_of_sample):
     # Load dataset and return a DataFrame with a specified number of samples.
     df = pd.read_csv(dataset_path)
@@ -28,11 +28,16 @@ def ocr(preprocessed_img) -> str:
 def postprocessing(text: str) -> list:
     # Clean and extract relevant numerical data from OCR text.
     lower_case = text.lower().replace('\n', '')
-    symbols = r'[ !@#%^&*()$_\-\+\{\}\[\]\'\|:;"<>,./~?`=\"©™°®¢»«¥“”§—‘’é€]'
+    symbols = r'[ !@#%^&*()$_\-\+\{\}\[\]\'\|:;<>,./~?`=\©™°®¢»«¥“”§—‘’é€]' #removed " symbol
     alphabets = r'[jsxyz]'
     pattern = r'(\d+..)'
     cleaned_symbol = re.sub(symbols, '', lower_case)
     cleaned_text = re.findall(pattern, cleaned_symbol)
+
+    for i, string in enumerate(cleaned_text):
+        if '"' in string:
+            cleaned_text[i] = string.replace('"', 'inch')
+
     return cleaned_text
 
 def match_units(input_list, units_dict, entity_name):
@@ -53,8 +58,8 @@ def match_units(input_list, units_dict, entity_name):
     return results
 
 def main():
-    dataset_path = '../dataset/train.csv'
-    no_of_sample = 10
+    dataset_path = 'path to dataset'
+    no_of_sample = 50
     df = loader(dataset_path, no_of_sample)
     df['List'] = pd.Series(dtype='object')
     
@@ -64,8 +69,8 @@ def main():
     for i, row in tqdm(df.iterrows(), total=df.shape[0], desc="Processing Images"):
         link = row['image_link'].split('/')[-1]
         file_name = re.findall(r'.*\.jpg', link)[0]
-        img_path = f'../images/{file_name}'
-        
+        img_path = f'..\images\\{file_name}'
+        #print(img_path)
         img = preprocessing(img_path)
         tes_text = ocr(img)
         output = postprocessing(tes_text)
