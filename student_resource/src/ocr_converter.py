@@ -85,7 +85,7 @@ def main():
     ocr_method = 'e' # t for tesseract, e for easyocr
     df = loader(dataset_path, no_of_sample)
     # df['List'] = pd.Series(dtype='object')
-    start_index = 1_05_000
+    start_index = 1_19_600
     end_index = 1_20_001
     
     print("Data Loaded :)")
