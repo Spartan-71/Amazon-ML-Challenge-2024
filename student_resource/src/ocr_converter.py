@@ -85,7 +85,7 @@ def main():
     ocr_method = 'e' # t for tesseract, e for easyocr
     df = loader(dataset_path, no_of_sample)
     # df['List'] = pd.Series(dtype='object')
-    start_index = find_highest_ckpt_number("./checkpoints")
+    start_index = 1_20_600
     
     print("Data Loaded :)")
     
