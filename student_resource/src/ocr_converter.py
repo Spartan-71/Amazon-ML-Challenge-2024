@@ -85,12 +85,13 @@ def main():
     ocr_method = 'e' # t for tesseract, e for easyocr
     df = loader(dataset_path, no_of_sample)
     # df['List'] = pd.Series(dtype='object')
-    start_index = 1_31_000
+    start_index = 1_05_000
+    end_index = 1_20_001
     
     print("Data Loaded :)")
     
     # Iterate over the DataFrame with a progress bar
-    for i, row in tqdm(df.iloc[start_index:].iterrows(), total=df.shape[0] - start_index, desc="Processing Images"):
+    for i, row in tqdm(df.iloc[start_index:end_index].iterrows(), total=end_index - start_index, desc="Processing Images"):
         link = row['image_link'].split('/')[-1]
         file_name = re.findall(r'.*\.jpg', link)[0]
         img_path = f'./images/{file_name}'
@@ -111,9 +112,9 @@ def main():
             df.iloc[i-save_interval:i].to_csv(csv_file_path, index=False)
             print(f"Checkpoint {i} saved to {csv_file_path}")
 
-    csv_file_path = f'checkpoints/{df.shape[0]}.csv'
-    df.iloc[start_index:].to_csv(csv_file_path, index=False)
-    print(f"Final Output saved to {csv_file_path}")
+    # csv_file_path = f'checkpoints/{df.shape[0]}.csv'
+    # df.iloc[start_index:].to_csv(csv_file_path, index=False)
+    # print(f"Final Output saved to {csv_file_path}")
 
 if __name__ == "__main__":
     main()
