@@ -85,7 +85,7 @@ def main():
     ocr_method = 'e' # t for tesseract, e for easyocr
     df = loader(dataset_path, no_of_sample)
     # df['List'] = pd.Series(dtype='object')
-    start_index = 1_20_600
+    start_index = 1_31_000
     
     print("Data Loaded :)")
     
@@ -111,8 +111,8 @@ def main():
             df.iloc[i-save_interval:i].to_csv(csv_file_path, index=False)
             print(f"Checkpoint {i} saved to {csv_file_path}")
 
-    csv_file_path = f'checkpoints/final.csv'
-    df.to_csv(csv_file_path, index=False)
+    csv_file_path = f'checkpoints/{df.shape[0]}.csv'
+    df.iloc[start_index:].to_csv(csv_file_path, index=False)
     print(f"Final Output saved to {csv_file_path}")
 
 if __name__ == "__main__":
