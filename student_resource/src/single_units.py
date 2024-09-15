@@ -49,6 +49,7 @@ units_dict = {
         'mg': 'milligram',
         'o':'ounce',
         'oz': 'ounce',
+        'i':'pound',
         'l':'pound',
         'lb': 'pound',
         't': 'ton'
@@ -65,6 +66,7 @@ units_dict = {
         'o':'ounce',
         'oz': 'ounce',
         'l':'pound',
+        'i':'pound',
         'lb': 'pound',
         't': 'ton'
     },

@@ -33,7 +33,8 @@ def postprocessing(text: str) -> list:
     # pattern = r'(\d+(\.\d+)?\w{2})'
     # pattern = r'(\d+(\.\d{1,})?\w{2})'
     pattern = r'(\d+(\.\d+)?\w)'
-    cleaned_symbol = re.sub(symbols, ' ', lower_case) 
+    cleaned_symbol = re.sub(symbols, ' ', lower_case)
+    cleaned_symbol = cleaned_symbol.replace('"', 'inch')
     cleaned_text = re.findall(pattern, cleaned_symbol) # returns a list of tuples
     cleaned_text = [item for tup in cleaned_text for item in tup] # returns a list of strings
     print('----------------------------------------------------------------------------------------')
@@ -59,7 +60,7 @@ def match_units(input_list, units_dict, entity_name):
             #     last_one_char = item[-1:]
             #     result=abb_dict.get(last_one_char)
             #     results.append(f"{item[:-2]} {result}")
-
+    print(f"category: {entity_name}")
     print(f"matched units: {results}")
     return results
 
@@ -90,7 +91,6 @@ def predictor(image_link, category_id, entity_name, text):
     Call your model/approach here
     '''
     #TODO
-    print(f"cat: {entity_name}")
     output = postprocessing(text)
     matched_units = match_units(output, ut.units_dict, entity_name)
     final_output = get_max(matched_units)
