@@ -19,5 +19,5 @@ for i in range(total_in_test):
 
 print(len(missing))
 
-df.to_csv('./cleaned_data2.csv')
+df.to_csv('./cleaned_data.csv')
 print("written")
