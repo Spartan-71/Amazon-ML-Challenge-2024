@@ -36,6 +36,15 @@ units_dict = {
         't': 'ton'
     },
 
+    'maximum_weight_recommendation':{
+        'g': 'gram',
+        'kg': 'kilogram',
+        'µg': 'microgram',
+        'mg': 'milligram',
+        'oz': 'ounce',
+        'lb': 'pound',
+        't': 'ton'
+    },
     'voltage':{'kv': 'kilovolt','mv': 'millivolt','v': 'volt'},
     'wattage':{'kw': 'kilowatt','w': 'watt'},
 

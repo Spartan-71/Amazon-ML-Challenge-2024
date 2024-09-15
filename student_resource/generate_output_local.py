@@ -72,7 +72,6 @@ def get_max(units_list):
     max_val_unit = units_list[0].split(" ")[1]
     for u in units_list:
         parts = u.split(' ')
-        print(f"parts: {parts}")
         num = parts[0]
         if '.' in num:
             num = float(num)

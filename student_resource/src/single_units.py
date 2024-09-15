@@ -53,7 +53,21 @@ units_dict = {
         'lb': 'pound',
         't': 'ton'
     },
-
+    'maximum_weight_recommendation': {
+        'g': 'gram',
+        'k':'kilogram',
+        'kg': 'kilogram',
+        'µ':'microgram',
+        'u':'microgram',
+        'µg': 'microgram',
+        'm':'milligram',
+        'mg': 'milligram',
+        'o':'ounce',
+        'oz': 'ounce',
+        'l':'pound',
+        'lb': 'pound',
+        't': 'ton'
+    },
     'voltage':{'k':'kilovolt','kv': 'kilovolt','m':'millivolt','mv': 'millivolt','v': 'volt'},
     'wattage':{'k':'kilowatt','kw': 'kilowatt','w': 'watt'},
 
