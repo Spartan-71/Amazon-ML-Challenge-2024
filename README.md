@@ -1,5 +1,3 @@
-# Amazon-ML-Challenge-2024
-
 ## Problem Statement: 
 ### Feature Extraction from Images
 
@@ -33,14 +31,16 @@ Our model achieved the following results:
 - **Rank**: 503 out of 2500+ teams
 
 ## Conclusion 
-This hackathon, spanning four days, was the longest we’ve participated in so far. We faced challenges, particularly with the computational resources needed to process such a large volume of data. Processing the test.csv file, which involved downloading over 52 GB of images and running them through an OCR model, took us collectively more than 20 hours. Despite these obstacles, it was an invaluable experience to work on a real-world problem faced by Amazon. We are extremely grateful to Amazon for hosting such an engaging hackathon and look forward to competing again next year!
+This hackathon, spanning four days, was the longest we’ve participated in so far. We faced challenges, particularly with the computational resources needed to process such a large volume of data. Processing the test.csv file, which involved downloading over **52 GB** of images and running them through an OCR model, took us collectively more than **20 hours**. Despite these obstacles, it was an invaluable experience to work on a real-world problem faced by Amazon. 
+
+We are extremely grateful to Amazon for hosting such an engaging hackathon and look forward to competing again next year!
 
 
 ## Contributors
 
-- [Anish Dabhane](https://github.com/Spartan-71) – Text Postprocessing & Unit Extraction 
-- [Kshitij Aucharmal](https://github.com/kshitijhaucharmal) – Image Processing & OCR Integration
-- [Ajinkya Bogle](https://github.com/Ajinkya-25) – Image Preprocessing & Unit Extraction
+1. [Anish Dabhane](https://github.com/Spartan-71) – Text Postprocessing & Unit Extraction 
+2. [Kshitij Aucharmal](https://github.com/kshitijhaucharmal) – Image Processing & OCR Integration
+3. [Ajinkya Bogle](https://github.com/Ajinkya-25) – Image Preprocessing & Unit Extraction
 
 
 
